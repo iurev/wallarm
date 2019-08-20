@@ -1,5 +1,6 @@
 class Api::V1::DecisionTreeController < Api::V1::ApplicationController
   def index
-    render json: {}
+    result = DecisionTree.construct
+    render json: result
   end
 end

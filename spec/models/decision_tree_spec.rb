@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe DecisionTree, type: :model do
-  describe '.returns_true' do
+  describe '.construct' do
     it 'success' do
-      expect(subject.class.returns_true).to be_truthy
+      expect(subject.class.construct).to be_kind_of(Hash)
     end
   end
 end
