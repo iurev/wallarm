@@ -19,6 +19,7 @@ class DecisionTree
   DOC
   attr_accessor :values
 
+  # TODO: (?) change empty `[Number]` to `DecisionTree`
   <<-DOC
     `DecisionTree` or `[Number]`,
     alternative branch when `Action` doesn't have common `key`
@@ -30,37 +31,20 @@ class DecisionTree
     ```
     or
     ```
-      default: [1, 2] # TODO
+      default: [] # TODO
     ```
   DOC
   attr_accessor :default
 
   def self.construct
-    {
-      key: 'color',
-      values: {
-        green: {
-          key: 'location',
-          values: {
-            unknown: [11]
-          },
-          default: []
-        },
-        red: {
-          key: 'real',
-          values: {
-            no: [12]
-          },
-          default: []
-        }
-      },
-      default: {
-        key: 'location',
-        values: {
-          Moscow: [13]
-        },
-        default: []
-      }
-    }
+    action = Action.first
+    dt = DecisionTree.new({
+      key: Action.first.properties.keys.first,
+      values: {}, # TODO: add default initialization
+      default: [], # TODO: add default initialization
+    })
+    dt.values = []
+    dt.values.push(action.id)
+    dt
   end
 end

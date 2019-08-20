@@ -20,8 +20,20 @@ RSpec.describe DecisionTree, type: :model do
   end
 
   describe '.construct' do
-    it 'success' do
-      expect(subject.class.construct).to be_kind_of(Hash)
+    describe 'one action' do
+      describe 'one key' do
+        let!(:action) do
+          create(:action, properties: {
+            color: 'green'
+          })
+        end
+        let(:dt) { DecisionTree.construct }
+
+        it { expect(dt.key).to eq('color') }
+        it { expect(dt.values.length).to eq(1) }
+        it { expect(dt.values[0]).to eq(action.id) }
+        it { expect(dt.default).to eq([]) }
+      end
     end
   end
 end
