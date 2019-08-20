@@ -1,5 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe Action, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'create' do
+    describe 'success' do
+      pending
+    end
+    describe 'fail' do
+      pending
+    end
+  end
+
+  describe 'create' do
+    describe 'success' do
+      pending
+    end
+    describe 'fail' do
+      pending
+    end
+  end
 end
