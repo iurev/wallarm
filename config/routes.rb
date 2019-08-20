@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   scope :api do
     scope :v1 do
       resources :actions, only: [:index, :create]
+      get '/decision_tree', controller: 'api/v1/decision_tree', action: :index
     end
   end
 end
