@@ -18,14 +18,14 @@ class DecisionTree::Node
 
   def add!(action)
     if action.keys.empty?
-      @end_actions.push(action)
+      end_actions.push(action)
     else
       if key
         if action.keys.include?(key)
           values.add!(action, key)
         else
-          @default = self.class.new
-          @default.add!(action)
+          self.default = self.class.new unless default
+          default.add!(action)
         end
       else
         self.key = action.key
@@ -37,7 +37,7 @@ class DecisionTree::Node
 
   def to_hash
     if end_actions.length >= 1
-      if @values.empty?
+      if values.empty?
         return end_actions.map(&:id)
       else
         return {

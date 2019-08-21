@@ -236,7 +236,7 @@ RSpec.describe DecisionTree, type: :model do
       end
     end
 
-    describe 'example from pdf' do
+    describe 'example #1 from pdf' do
       let!(:action1) do
         create(:action, properties: {
           color: 'green',
@@ -279,6 +279,55 @@ RSpec.describe DecisionTree, type: :model do
             key: 'location',
             values: {
               Moscow: [action3.id]
+            },
+            default: []
+          }
+        })
+      end
+    end
+
+    describe 'example #2' do
+      let!(:action1) do
+        create(:action, properties: {
+          v: '1',
+          v2: '2'
+        })
+      end
+      let!(:action2) do
+        create(:action, properties: {
+          value: 'moscow',
+        })
+      end
+      let!(:action3) do
+        create(:action, properties: {
+          value: 'asdf'
+        })
+      end
+      let!(:action4) do
+        create(:action, properties: {
+          value: 'asdf2'
+        })
+      end
+      let(:dt) { DecisionTree.construct }
+
+      it do
+        expect(dt.to_hash).to eq({
+          key: 'v',
+          values: {
+            "1": {
+              key: 'v2',
+              values: {
+                "2": [action1.id]
+              },
+              default: []
+            },
+          },
+          default: {
+            key: 'value',
+            values: {
+              moscow: [action2.id],
+              asdf: [action3.id],
+              asdf2: [action4.id],
             },
             default: []
           }

@@ -35,13 +35,13 @@ class DecisionTree::Values
   end
 
   def empty?
-    @hash.keys.empty?
+    hash.keys.empty?
   end
 
   def to_hash
     hvalues = {}
-    @hash.keys.each do |key|
-      hvalues[key] = @hash[key].to_hash
+    hash.keys.each do |key|
+      hvalues[key] = hash[key].to_hash
     end
     hvalues
   end
