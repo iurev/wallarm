@@ -66,7 +66,6 @@ RSpec.describe DecisionTree, type: :model do
         end
         let(:dt) { DecisionTree.construct }
 
-        pending 'Implement choosing consistent key'
         it do
           expect(dt.to_hash).to eq({
             key: 'color',
