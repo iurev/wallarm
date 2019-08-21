@@ -16,7 +16,7 @@ class Act
   end
 
   def keys
-    @properties.keys
+    @properties.keys.sort
   end
 
   def key
@@ -29,7 +29,7 @@ class Values
     @hash = {}
   end
 
-  def add!(action, action_key = action.key)
+  def add!(action, action_key)
 
     new_action = action.clone.remove_key(action_key)
     v = action.properties[action_key].to_sym
@@ -124,7 +124,7 @@ class DecisionTree
       if !key
         self.key = action.key
         self.values = Values.new
-        self.values.add!(action)
+        self.values.add!(action, self.key)
       else
         if action.keys.include?(self.key)
           self.values.add!(action, self.key)

@@ -79,25 +79,27 @@ RSpec.describe DecisionTree, type: :model do
         let(:dt) { DecisionTree.construct }
 
         pending 'Implement choosing consistent key'
-        # it do
-        #   expect(dt.to_h).to eq({
-        #     key: 'color',
-        #     values: {
-        #       green: {
-        #         key: 'location',
-        #         values: {
-        #           'Moscow': {
-        #             key: 'real',
-        #             values: [action.id],
-        #             default: []
-        #           }
-        #         },
-        #         default: []
-        #       }
-        #     },
-        #     default: []
-        #   })
-        # end
+        it do
+          expect(dt.to_h).to eq({
+            key: 'color',
+            values: {
+              green: {
+                key: 'location',
+                values: {
+                  'Moscow': {
+                    key: 'real',
+                    values: {
+                      yes: [action.id]
+                    },
+                    default: []
+                  }
+                },
+                default: []
+              }
+            },
+            default: []
+          })
+        end
       end
     end
 
@@ -229,23 +231,22 @@ RSpec.describe DecisionTree, type: :model do
         end
         let(:dt) { DecisionTree.construct }
 
-        pending 'Implement choosing consistent key'
 
-        # it do
-        #   expect(dt.to_h).to eq({
-        #     key: 'color',
-        #     values: {
-        #       green: {
-        #         key: 'city',
-        #         values: {
-        #           Moscow: [action1.id, action2.id]
-        #         },
-        #         default: []
-        #       }
-        #     },
-        #     default: []
-        #   })
-        # end
+        it do
+          expect(dt.to_h).to eq({
+            key: 'city',
+            values: {
+              Moscow: {
+                key: 'color',
+                values: {
+                  green: [action1.id, action2.id]
+                },
+                default: []
+              }
+            },
+            default: []
+          })
+        end
       end
     end
 
