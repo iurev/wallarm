@@ -326,6 +326,25 @@ RSpec.describe DecisionTree, type: :model do
           })
         end
       end
+
+      describe 'numbers' do
+        let!(:action) do
+          create(:action, properties: {
+            number: 1,
+          })
+        end
+        let(:dt) { DecisionTree.construct }
+
+        it do
+          expect(dt.to_hash).to eq({
+            key: 'number',
+            values: {
+              '1': [action.id],
+            },
+            default: []
+          })
+        end
+      end
     end
 
     describe 'performance', :perf do

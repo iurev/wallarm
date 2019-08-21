@@ -17,7 +17,7 @@ class DecisionTree::Values
 
   def add!(action, action_key)
     new_action = action.clone.remove_key(action_key)
-    v = action.properties[action_key].to_sym
+    v = action.properties[action_key].to_s.to_sym
     if hash.keys.length >= 1
       if hash[v]
         dt = hash[v]
