@@ -1,12 +1,12 @@
 
 class DecisionTree::Values
   <<-DOC
-    `Hash` where each value is a `DecisionTree`
+    `Hash` where each value is a `DecisionTree::Node`
     All keys present all possible values for the given `key`
     ```
       {
-        value1: <DecisionTree>,
-        value2: <DecisionTree>,
+        value1: <DecisionTree::Node>,
+        value2: <DecisionTree::Node>,
       }
     ```
   DOC
@@ -24,12 +24,12 @@ class DecisionTree::Values
         dt = hash[v]
         dt.add!(new_action)
       else
-        dt = DecisionTree.new
+        dt = DecisionTree::Node.new
         dt.add!(new_action)
         hash[v] = dt
       end
     else
-      dt = DecisionTree.new
+      dt = DecisionTree::Node.new
       dt.add!(new_action)
       hash[v] = dt
     end

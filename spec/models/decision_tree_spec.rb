@@ -1,18 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe DecisionTree, type: :model do
-  describe '.new' do
-    let(:dt) do
-      dt = DecisionTree.new
-      dt.key = 'color'
-      dt.default = DecisionTree.new
-      dt
-    end
-    it { expect(dt.key).to eq('color') }
-    it { expect(dt.values).to be_kind_of(DecisionTree::Values) }
-    it { expect(dt.default).to be_kind_of(DecisionTree) }
-  end
-
   describe '.construct' do
     describe 'no actions' do
       let(:dt) { DecisionTree.construct }
