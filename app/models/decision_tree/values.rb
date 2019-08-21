@@ -1,4 +1,3 @@
-
 class DecisionTree::Values
   <<-DOC
     `Hash` where each value is a `DecisionTree::Node`
