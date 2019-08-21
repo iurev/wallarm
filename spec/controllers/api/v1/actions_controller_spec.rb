@@ -36,7 +36,7 @@ RSpec.describe Api::V1::ActionsController, type: :controller do
       end
       it do
         request
-        expect(response.status).to eq(422)
+        expect(response.status).to eq(400)
       end
       it do
         expect { request }.not_to change { Action.count }

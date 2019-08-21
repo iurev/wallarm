@@ -8,7 +8,7 @@ class Api::V1::ActionsController < Api::V1::ApplicationController
     if action.save
       render json: action
     else
-      render json: action.errors.messages, status: :unprocessable_entity
+      render json: action.errors.messages, status: 400
     end
   end
 
