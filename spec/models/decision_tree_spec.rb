@@ -374,6 +374,25 @@ RSpec.describe DecisionTree, type: :model do
         end
       end
 
+      describe 'emoji' do
+        let!(:action) do
+          create(:action, properties: {
+            symbols: '❤️'
+          })
+        end
+        let(:dt) { DecisionTree.construct }
+
+        it do
+          expect(dt.to_hash).to eq({
+            key: 'symbols',
+            values: {
+              '❤️': [action.id],
+            },
+            default: []
+          })
+        end
+      end
+
       describe 'numbers' do
         let!(:action) do
           create(:action, properties: {
@@ -404,7 +423,7 @@ RSpec.describe DecisionTree, type: :model do
           end
           let(:dt) { DecisionTree.construct }
 
-          it { expect(dt).to be_kind_of(DecisionTree) }
+          it { expect(dt).to be_kind_of(DecisionTree::Node) }
           it { expect(dt.to_hash).to be_kind_of(Hash) }
           it { expect { DecisionTree.construct }.to perform_under(50).ms }
         end
@@ -421,7 +440,7 @@ RSpec.describe DecisionTree, type: :model do
           end
           let(:dt) { DecisionTree.construct }
 
-          it { expect(dt).to be_kind_of(DecisionTree) }
+          it { expect(dt).to be_kind_of(DecisionTree::Node) }
           it { expect(dt.to_hash).to be_kind_of(Hash) }
           it { expect { DecisionTree.construct }.to perform_under(50).ms }
         end
@@ -436,7 +455,7 @@ RSpec.describe DecisionTree, type: :model do
           end
           let(:dt) { DecisionTree.construct }
 
-          it { expect(dt).to be_kind_of(DecisionTree) }
+          it { expect(dt).to be_kind_of(DecisionTree::Node) }
           it { expect(dt.to_hash).to be_kind_of(Hash) }
           it { expect { DecisionTree.construct }.to perform_under(50).ms }
         end
@@ -453,7 +472,7 @@ RSpec.describe DecisionTree, type: :model do
           end
           let(:dt) { DecisionTree.construct }
 
-          it { expect(dt).to be_kind_of(DecisionTree) }
+          it { expect(dt).to be_kind_of(DecisionTree::Node) }
           it { expect(dt.to_hash).to be_kind_of(Hash) }
           # 😕
           it { expect { DecisionTree.construct }.to perform_under(10_000).ms }
