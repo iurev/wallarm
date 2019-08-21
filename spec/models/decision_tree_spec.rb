@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe DecisionTree, type: :model do
   describe '.new' do
     let(:dt) do
-      DecisionTree.new({
-        key: 'color',
-        default: DecisionTree.new,
-      })
+      dt = DecisionTree.new
+      dt.key = 'color'
+      dt.default = DecisionTree.new
+      dt
     end
     it { expect(dt.key).to eq('color') }
     it { expect(dt.values).to be_kind_of(DecisionTree::Values) }

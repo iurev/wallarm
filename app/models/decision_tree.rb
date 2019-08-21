@@ -1,56 +1,39 @@
 class DecisionTree
+  ACTIONS_BATCH_SIZE = 500
   include ActiveModel::Model
 
-  # `String`, `Actions`'s key
+  # `String`, one of the `Action#properties`'s keys
   attr_accessor :key
 
-  <<-DOC
-    `Hash` or `[Number]`
-    All keys present all possible values for the given `key`
-    If value is `DecisionTree` – tree goes further
-    If value is array of numbers – action is classified
-    ```
-      {
-        value1: <DecisionTree>,
-        value2: <DecisionTree>,
-        value3: [1, 2]
-      }
-    ```
-  DOC
+  # `DecisionTree::Values`, all possible values for the given `key`
   attr_accessor :values
 
-  # TODO: (?) change empty `[Number]` to `DecisionTree`
-  <<-DOC
-    `DecisionTree` or `[Number]`,
-    alternative branch when `Action` doesn't have common `key`
-
-    If value is `DecisionTree` – it classifies action by another `key`
-    If value is array of numbers – TODO (?)
-    ```
-      default: <DecisionTree>
-    ```
-    or
-    ```
-      default: [] # TODO
-    ```
-  DOC
+  # `DecisionTree`, alternative branch when `Action` doesn't have common `key`
   attr_accessor :default
 
-  def initialize(params = {})
-    @key = params[:key]
-    @values = Values.new
-    @default = params[:default]
+  # `[DecisionTree::ActionWrapper]`, classified actions
+  attr_accessor :end_actions
 
+  def initialize(params = {})
+    @values = Values.new
     @end_actions = []
   end
 
   def self.construct()
     top = DecisionTree.new
-    Action.all.each do |action|
+    self.go_actions_by_batch do |action|
       top.add!(ActionWrapper.new(action))
     end
 
     top
+  end
+
+  def self.go_actions_by_batch
+    Action.find_in_batches(batch_size: ACTIONS_BATCH_SIZE) do |actions_batch|
+      actions_batch.each do |action|
+        yield action
+      end
+    end
   end
 
   def add!(action)
@@ -73,14 +56,14 @@ class DecisionTree
   end
 
   def to_h
-    if @end_actions.length >= 1
+    if end_actions.length >= 1
       if @values.empty?
-        return @end_actions.map(&:id)
+        return end_actions.map(&:id)
       else
         return {
           key: key,
           values: values.to_h,
-          default: @end_actions.map(&:id)
+          default: end_actions.map(&:id)
         }
       end
     end
