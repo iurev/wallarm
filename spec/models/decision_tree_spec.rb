@@ -5,21 +5,23 @@ RSpec.describe DecisionTree, type: :model do
     let(:dt) do
       DecisionTree.new({
         key: 'color',
-        values: {
-          value1: DecisionTree.new,
-          value2: [1, 2]
-        },
         default: DecisionTree.new,
       })
     end
     it { expect(dt.key).to eq('color') }
-    it { expect(dt.values).to be_kind_of(Hash) }
-    it { expect(dt.values[:value1]).to be_kind_of(DecisionTree) }
-    it { expect(dt.values[:value2]).to be_kind_of(Array) }
+    it { expect(dt.values).to be_kind_of(Values) }
     it { expect(dt.default).to be_kind_of(DecisionTree) }
   end
 
   describe '.construct' do
+    describe 'no actions' do
+      let(:dt) { DecisionTree.construct }
+
+      it do
+        expect(dt.to_h).to eq([])
+      end
+    end
+
     describe 'one action' do
       describe 'one key' do
         let!(:action) do
@@ -29,10 +31,271 @@ RSpec.describe DecisionTree, type: :model do
         end
         let(:dt) { DecisionTree.construct }
 
-        it { expect(dt.key).to eq('color') }
-        it { expect(dt.values.length).to eq(1) }
-        it { expect(dt.values[0]).to eq(action.id) }
-        it { expect(dt.default).to eq([]) }
+        it do
+          expect(dt.to_h).to eq({
+            key: 'color',
+            values: {
+              green: [action.id],
+            },
+            default: []
+          })
+        end
+      end
+
+      describe 'two keys' do
+        let!(:action) do
+          create(:action, properties: {
+            color: 'green',
+            location: 'Moscow'
+          })
+        end
+        let(:dt) { DecisionTree.construct }
+
+        it do
+          expect(dt.to_h).to eq({
+            key: 'color',
+            values: {
+              green: {
+                key: 'location',
+                values: {
+                  'Moscow': [action.id],
+                },
+                default: []
+              }
+            },
+            default: []
+          })
+        end
+      end
+
+      describe 'three keys' do
+        let!(:action) do
+          create(:action, properties: {
+            color: 'green',
+            location: 'Moscow',
+            real: 'yes'
+          })
+        end
+        let(:dt) { DecisionTree.construct }
+
+        pending 'Implement choosing consistent key'
+        # it do
+        #   expect(dt.to_h).to eq({
+        #     key: 'color',
+        #     values: {
+        #       green: {
+        #         key: 'location',
+        #         values: {
+        #           'Moscow': {
+        #             key: 'real',
+        #             values: [action.id],
+        #             default: []
+        #           }
+        #         },
+        #         default: []
+        #       }
+        #     },
+        #     default: []
+        #   })
+        # end
+      end
+    end
+
+    describe 'two actions' do
+      describe 'same key' do
+        describe 'same values' do
+          let!(:action1) do
+            create(:action, properties: {
+              color: 'green'
+            })
+          end
+          let!(:action2) do
+            create(:action, properties: {
+              color: 'green'
+            })
+          end
+          let(:dt) { DecisionTree.construct }
+
+          it do
+            expect(dt.to_h).to eq({
+              key: 'color',
+              values: {
+                green: [action1.id, action2.id],
+              },
+              default: []
+            })
+          end
+        end
+
+        describe 'differеnt values' do
+          let!(:action1) do
+            create(:action, properties: {
+              color: 'green'
+            })
+          end
+          let!(:action2) do
+            create(:action, properties: {
+              color: 'red'
+            })
+          end
+          let(:dt) { DecisionTree.construct }
+
+          it do
+            expect(dt.to_h).to eq({
+              key: 'color',
+              values: {
+                green: [action1.id],
+                red:  [action2.id],
+              },
+              default: []
+            })
+          end
+        end
+      end
+
+      describe 'two different keys' do
+        let!(:action1) do
+          create(:action, properties: {
+            color: 'green'
+          })
+        end
+        let!(:action2) do
+          create(:action, properties: {
+            city: 'Moscow'
+          })
+        end
+        let(:dt) { DecisionTree.construct }
+
+        it do
+          expect(dt.to_h).to eq({
+            key: 'color',
+            values: {
+              green: [action1.id],
+            },
+            default: {
+              key: 'city',
+              values: {
+                Moscow: [action2.id],
+              },
+              default: []
+            }
+          })
+        end
+      end
+
+      describe 'same keys, same values, but +1 key' do
+        let!(:action1) do
+          create(:action, properties: {
+            color: 'green'
+          })
+        end
+        let!(:action2) do
+          create(:action, properties: {
+            color: 'green',
+            city: 'Moscow'
+          })
+        end
+        let(:dt) { DecisionTree.construct }
+
+        it do
+          expect(dt.to_h).to eq({
+            key: 'color',
+            values: {
+              green: {
+                key: 'city',
+                values: {
+                  Moscow: [action2.id]
+                },
+                default: [action1.id]
+              }
+            },
+            default: []
+          })
+        end
+      end
+
+      describe 'same keys, same values, but +1 key, another order' do
+        let!(:action1) do
+          create(:action, properties: {
+            color: 'green',
+            city: 'Moscow'
+          })
+        end
+        let!(:action2) do
+          create(:action, properties: {
+            color: 'green',
+            city: 'Moscow'
+          })
+        end
+        let(:dt) { DecisionTree.construct }
+
+        pending 'Implement choosing consistent key'
+
+        # it do
+        #   expect(dt.to_h).to eq({
+        #     key: 'color',
+        #     values: {
+        #       green: {
+        #         key: 'city',
+        #         values: {
+        #           Moscow: [action1.id, action2.id]
+        #         },
+        #         default: []
+        #       }
+        #     },
+        #     default: []
+        #   })
+        # end
+      end
+    end
+
+    describe 'example from pdf' do
+      let!(:action1) do
+        create(:action, properties: {
+          color: 'green',
+          location: 'unknown'
+        })
+      end
+      let!(:action2) do
+        create(:action, properties: {
+          color: 'red',
+          real: 'no'
+        })
+      end
+      let!(:action3) do
+        create(:action, properties: {
+          location: 'Moscow'
+        })
+      end
+      let(:dt) { DecisionTree.construct }
+
+      it do
+        expect(dt.to_h).to eq({
+          key: 'color',
+          values: {
+            green: {
+              key: 'location',
+              values: {
+                unknown: [action1.id]
+              },
+              default: []
+            },
+            red: {
+              key: 'real',
+              values: {
+                no: [action2.id]
+              },
+              default: []
+            }
+          },
+          default: {
+            key: 'location',
+            values: {
+              Moscow: [action3.id]
+            },
+            default: []
+          }
+        })
       end
     end
   end
