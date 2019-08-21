@@ -299,5 +299,45 @@ RSpec.describe DecisionTree, type: :model do
         })
       end
     end
+
+    describe 'strange keys' do
+      describe 'Ktulkhu' do
+        let!(:action) do
+          create(:action, properties: {
+            name: 'kəˈtuːluː'
+          })
+        end
+        let(:dt) { DecisionTree.construct }
+
+        it do
+          expect(dt.to_h).to eq({
+            key: 'name',
+            values: {
+              'kəˈtuːluː': [action.id],
+            },
+            default: []
+          })
+        end
+      end
+
+      describe 'special symbols' do
+        let!(:action) do
+          create(:action, properties: {
+            symbols: '\'~*^$@$@!'
+          })
+        end
+        let(:dt) { DecisionTree.construct }
+
+        it do
+          expect(dt.to_h).to eq({
+            key: 'symbols',
+            values: {
+              '\'~*^$@$@!': [action.id],
+            },
+            default: []
+          })
+        end
+      end
+    end
   end
 end
