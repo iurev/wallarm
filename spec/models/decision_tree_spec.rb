@@ -9,7 +9,7 @@ RSpec.describe DecisionTree, type: :model do
       })
     end
     it { expect(dt.key).to eq('color') }
-    it { expect(dt.values).to be_kind_of(Values) }
+    it { expect(dt.values).to be_kind_of(DecisionTree::Values) }
     it { expect(dt.default).to be_kind_of(DecisionTree) }
   end
 
