@@ -22,42 +22,55 @@ class DecisionTree::Node
     else
       if key
         if action.keys.include?(key)
-          values.add!(action, key)
+          add_to_values(action, key)
         else
-          self.default = self.class.new unless default
-          default.add!(action)
+          add_to_default(action)
         end
       else
-        self.key = action.key
-        self.values = DecisionTree::Values.new
-        values.add!(action, key)
+        init_key(action)
       end
     end
   end
 
   def to_hash
-    if end_actions.length >= 1
-      if values.empty?
-        return end_actions.map(&:id)
-      else
-        return {
-          key: key,
-          values: values.to_hash,
-          default: end_actions.map(&:id)
-        }
-      end
+    if !end_actions.empty? && values.empty?
+      return end_actions.map(&:id)
     end
     return [] unless key
 
-    d = if default
+    {
+      key: key,
+      values: values.to_hash,
+      default: default_to_hash
+    }
+  end
+
+  private
+
+  def default_to_hash
+    if end_actions.length >= 1
+      return end_actions.map(&:id)
+    end
+
+    if default
       default.to_hash
     else
       []
     end
-    {
-      key: key,
-      values: values.to_hash,
-      default: d
-    }
+  end
+
+  def add_to_values(action, key)
+    values.add!(action, key)
+  end
+
+  def add_to_default(action)
+    self.default = self.class.new unless default
+    default.add!(action)
+  end
+
+  def init_key(action)
+    self.key = action.key
+    self.values = DecisionTree::Values.new
+    add_to_values(action, key)
   end
 end
