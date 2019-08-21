@@ -56,6 +56,9 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.1, >= 2.1.8)
+    benchmark-malloc (0.1.0)
+    benchmark-perf (0.5.0)
+    benchmark-trend (0.3.0)
     bootsnap (1.4.4)
       msgpack (~> 1.0)
     builder (3.2.3)
@@ -135,6 +138,15 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
+    rspec (3.8.0)
+      rspec-core (~> 3.8.0)
+      rspec-expectations (~> 3.8.0)
+      rspec-mocks (~> 3.8.0)
+    rspec-benchmark (0.5.0)
+      benchmark-malloc (~> 0.1.0)
+      benchmark-perf (~> 0.5.0)
+      benchmark-trend (~> 0.3.0)
+      rspec (>= 3.0.0, < 4.0.0)
     rspec-core (3.8.2)
       rspec-support (~> 3.8.0)
     rspec-expectations (3.8.4)
@@ -185,6 +197,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 3.11)
   rails (~> 6.0.0)
+  rspec-benchmark
   rspec-rails (~> 3.8)
   spring
   spring-watcher-listen (~> 2.0.0)

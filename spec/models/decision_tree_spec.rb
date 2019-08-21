@@ -339,5 +339,72 @@ RSpec.describe DecisionTree, type: :model do
         end
       end
     end
+
+    describe 'performance', :perf do
+      describe '1000 records' do
+        describe 'same name-value' do
+          before(:each) do
+            1000.times do |i|
+              create(:action)
+            end
+          end
+          let(:dt) { DecisionTree.construct }
+
+          it { expect(dt).to be_kind_of(DecisionTree) }
+          it { expect(dt.to_h).to be_kind_of(Hash) }
+          it { expect { DecisionTree.construct }.to perform_under(50).ms }
+        end
+
+        describe 'same keys, different values' do
+          before(:each) do
+            1000.times do |i|
+              create(:action, {
+                properties: {
+                  value: "v#{i}"
+                }
+              })
+            end
+          end
+          let(:dt) { DecisionTree.construct }
+
+          it { expect(dt).to be_kind_of(DecisionTree) }
+          it { expect(dt.to_h).to be_kind_of(Hash) }
+          it { expect { DecisionTree.construct }.to perform_under(50).ms }
+        end
+
+        describe 'different keys, different values' do
+          before(:each) do
+            1000.times do |i|
+              properties = {}
+              properties[:"value#{i + 1}"] = "v#{i}"
+              create(:action, { properties: properties })
+            end
+          end
+          let(:dt) { DecisionTree.construct }
+
+          it { expect(dt).to be_kind_of(DecisionTree) }
+          it { expect(dt.to_h).to be_kind_of(Hash) }
+          it { expect { DecisionTree.construct }.to perform_under(50).ms }
+        end
+      end
+
+      describe '100_000 records' do
+        describe 'different keys, different values' do
+          before(:each) do
+            100_000.times do |i|
+              properties = {}
+              properties[:"value#{i + 1}"] = "v#{i}"
+              create(:action, { properties: properties })
+            end
+          end
+          let(:dt) { DecisionTree.construct }
+
+          it { expect(dt).to be_kind_of(DecisionTree) }
+          it { expect(dt.to_h).to be_kind_of(Hash) }
+          # 😕
+          it { expect { DecisionTree.construct }.to perform_under(10_000).ms }
+        end
+      end
+    end
   end
 end
