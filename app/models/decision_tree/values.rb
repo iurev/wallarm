@@ -17,21 +17,16 @@ class DecisionTree::Values
 
   def add!(action, action_key)
     new_action = action.clone.remove_key(action_key)
-    v = action.properties[action_key].to_s.to_sym
-    if hash.keys.length >= 1
-      if hash[v]
-        dt = hash[v]
-        dt.add!(new_action)
-      else
-        dt = DecisionTree::Node.new
-        dt.add!(new_action)
-        hash[v] = dt
-      end
+    v = action.value(action_key)
+
+    node = nil
+    if hash[v]
+      node = hash[v]
     else
-      dt = DecisionTree::Node.new
-      dt.add!(new_action)
-      hash[v] = dt
+      node = DecisionTree::Node.new
+      hash[v] = node
     end
+    node.add!(new_action)
   end
 
   def empty?

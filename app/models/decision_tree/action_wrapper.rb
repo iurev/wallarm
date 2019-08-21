@@ -22,4 +22,8 @@ class DecisionTree::ActionWrapper
   def key
     keys.first
   end
+
+  def value(key)
+    properties[key].to_s.to_sym
+  end
 end
