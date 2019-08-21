@@ -1,24 +1,87 @@
-# README
+# DecisionTree
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Требуется реализовать на RoR или Sinatra REST сервис, который умеет хранить описания классов объектов и строить “дерево принятия решений”, пригодное для классификации объектов в соответствии с хранящимися классами.
 
-Things you may want to cover:
+Требования к результату
 
-* Ruby version
+Обязательно:
 
-* System dependencies
+- [x]Сервис предоставляет REST интерфейс
 
-* Configuration
+- [x]Реализован на RoR
 
-* Database creation
+- [x]Позволяет создавать и получать Action’ы
 
-* Database initialization
+- [x]Позволяет получить DecisionTree, построенное по всем Action’ам
 
-* How to run the test suite
+- [x]Основные функции покрыты тестами
 
-* Services (job queues, cache servers, search engines, etc.)
+- [x]Входные данные проверяются на корректность, при ошибке возвращается ошибка 400 в json формате
 
-* Deployment instructions
+- [x]При проблемах на стороне сервиса возвращается ошибка 500 в json формате
 
-* ...
+- [x]Поведение в неопределенных случаях выбрать самому и описать.
+
+## API
+
+### Actions
+
+#### Создание
+
+curl:
+
+```
+POST /api/v1/actions HTTP/1.1
+Host: localhost:3000
+Content-Type: application/json
+
+{
+	"properties": { "value": "moscow" }
+}
+````
+
+Если все верно, то отвечает `200`, иначе `400` с описанием ошибки
+
+#### Получение
+
+curl:
+
+```
+GET /api/v1/actions HTTP/1.1
+Host: localhost:3000
+````
+
+Всегда возвращает `200` с массивом Action-ов
+
+### DecisionTree
+
+#### Получение
+
+curl:
+
+```
+GET /api/v1/decision_tree HTTP/1.1
+Host: localhost:3000
+````
+
+Всегда возвращает дерево решений со статусом `200`
+
+
+## Неопределенные случаи
+
+- неверный формат `properties` для `Action` – ошибка с описанием
+- `decision_tree` возвращает `[]` если нет actions
+- ключами могут быть любые объекты. Важно знать, что они конвертируются в строку. Для классификации объекта, его значения тоже нужно приводить к строке
+
+## Тестирование
+
+```
+bundle exec rspec
+```
+
+Тестирование на performance (по-умолчанию исключено)
+
+```
+bundle exec rspec --tag perf
+```
+
