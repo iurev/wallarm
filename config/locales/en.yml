@@ -31,3 +31,11 @@
 
 en:
   hello: "Hello world"
+
+  activerecord:
+    errors:
+      models:
+        action:
+          attributes:
+            properties:
+              invalid_json: '`properties` must be valid JSON'
