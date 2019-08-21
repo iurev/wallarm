@@ -11,26 +11,26 @@ class DecisionTree::Node
   # `[DecisionTree::ActionWrapper]`, classified actions
   attr_accessor :end_actions
 
-  def initialize(params = {})
+  def initialize
     @values = DecisionTree::Values.new
     @end_actions = []
   end
 
   def add!(action)
-    if action.keys.length == 0
+    if action.keys.empty?
       @end_actions.push(action)
     else
-      if !key
-        self.key = action.key
-        self.values = DecisionTree::Values.new
-        self.values.add!(action, self.key)
-      else
-        if action.keys.include?(self.key)
-          self.values.add!(action, self.key)
+      if key
+        if action.keys.include?(key)
+          values.add!(action, key)
         else
           @default = self.class.new
           @default.add!(action)
         end
+      else
+        self.key = action.key
+        self.values = DecisionTree::Values.new
+        values.add!(action, key)
       end
     end
   end
@@ -47,8 +47,7 @@ class DecisionTree::Node
         }
       end
     end
-    return [] if !key
-
+    return [] unless key
 
     d = if default
       default.to_hash

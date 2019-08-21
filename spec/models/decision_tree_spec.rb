@@ -134,7 +134,7 @@ RSpec.describe DecisionTree, type: :model do
               key: 'color',
               values: {
                 green: [action1.id],
-                red:  [action2.id],
+                red: [action2.id],
               },
               default: []
             })
@@ -217,7 +217,6 @@ RSpec.describe DecisionTree, type: :model do
           })
         end
         let(:dt) { DecisionTree.construct }
-
 
         it do
           expect(dt.to_hash).to eq({
@@ -350,7 +349,7 @@ RSpec.describe DecisionTree, type: :model do
       describe '1000 records' do
         describe 'same name-value' do
           before(:each) do
-            1000.times do |i|
+            1000.times do |_|
               create(:action)
             end
           end

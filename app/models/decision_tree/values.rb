@@ -35,7 +35,7 @@ class DecisionTree::Values
   end
 
   def empty?
-    @hash.keys.length === 0
+    @hash.keys.empty?
   end
 
   def to_hash

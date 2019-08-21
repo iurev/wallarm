@@ -14,11 +14,10 @@ RSpec.describe Api::V1::ActionsController, type: :controller do
     describe 'success' do
       let(:request) do
         post(:create, params: {
-            properties: {
-              value: 1
-              }
+          properties: {
+            value: 1
           }
-        )
+        })
       end
       it do
         request
@@ -32,9 +31,8 @@ RSpec.describe Api::V1::ActionsController, type: :controller do
     describe 'failure' do
       let(:request) do
         post(:create, params: {
-            properties: 4
-          }
-        )
+          properties: 4
+        })
       end
       it do
         request

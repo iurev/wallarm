@@ -11,7 +11,7 @@ class DecisionTree::ActionWrapper
   end
 
   def remove_key(key)
-    self.properties.delete(key)
+    properties.delete(key)
     self
   end
 
