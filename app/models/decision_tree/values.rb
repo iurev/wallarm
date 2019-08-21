@@ -39,10 +39,10 @@ class DecisionTree::Values
     @hash.keys.length === 0
   end
 
-  def to_h
+  def to_hash
     hvalues = {}
     @hash.keys.each do |key|
-      hvalues[key] = @hash[key].to_h
+      hvalues[key] = @hash[key].to_hash
     end
     hvalues
   end

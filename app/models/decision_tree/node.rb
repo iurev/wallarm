@@ -35,14 +35,14 @@ class DecisionTree::Node
     end
   end
 
-  def to_h
+  def to_hash
     if end_actions.length >= 1
       if @values.empty?
         return end_actions.map(&:id)
       else
         return {
           key: key,
-          values: values.to_h,
+          values: values.to_hash,
           default: end_actions.map(&:id)
         }
       end
@@ -51,13 +51,13 @@ class DecisionTree::Node
 
 
     d = if default
-      default.to_h
+      default.to_hash
     else
       []
     end
     {
       key: key,
-      values: values.to_h,
+      values: values.to_hash,
       default: d
     }
   end

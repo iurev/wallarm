@@ -6,7 +6,7 @@ RSpec.describe DecisionTree, type: :model do
       let(:dt) { DecisionTree.construct }
 
       it do
-        expect(dt.to_h).to eq([])
+        expect(dt.to_hash).to eq([])
       end
     end
 
@@ -20,7 +20,7 @@ RSpec.describe DecisionTree, type: :model do
         let(:dt) { DecisionTree.construct }
 
         it do
-          expect(dt.to_h).to eq({
+          expect(dt.to_hash).to eq({
             key: 'color',
             values: {
               green: [action.id],
@@ -40,7 +40,7 @@ RSpec.describe DecisionTree, type: :model do
         let(:dt) { DecisionTree.construct }
 
         it do
-          expect(dt.to_h).to eq({
+          expect(dt.to_hash).to eq({
             key: 'color',
             values: {
               green: {
@@ -68,7 +68,7 @@ RSpec.describe DecisionTree, type: :model do
 
         pending 'Implement choosing consistent key'
         it do
-          expect(dt.to_h).to eq({
+          expect(dt.to_hash).to eq({
             key: 'color',
             values: {
               green: {
@@ -107,7 +107,7 @@ RSpec.describe DecisionTree, type: :model do
           let(:dt) { DecisionTree.construct }
 
           it do
-            expect(dt.to_h).to eq({
+            expect(dt.to_hash).to eq({
               key: 'color',
               values: {
                 green: [action1.id, action2.id],
@@ -131,7 +131,7 @@ RSpec.describe DecisionTree, type: :model do
           let(:dt) { DecisionTree.construct }
 
           it do
-            expect(dt.to_h).to eq({
+            expect(dt.to_hash).to eq({
               key: 'color',
               values: {
                 green: [action1.id],
@@ -157,7 +157,7 @@ RSpec.describe DecisionTree, type: :model do
         let(:dt) { DecisionTree.construct }
 
         it do
-          expect(dt.to_h).to eq({
+          expect(dt.to_hash).to eq({
             key: 'color',
             values: {
               green: [action1.id],
@@ -188,7 +188,7 @@ RSpec.describe DecisionTree, type: :model do
         let(:dt) { DecisionTree.construct }
 
         it do
-          expect(dt.to_h).to eq({
+          expect(dt.to_hash).to eq({
             key: 'color',
             values: {
               green: {
@@ -221,7 +221,7 @@ RSpec.describe DecisionTree, type: :model do
 
 
         it do
-          expect(dt.to_h).to eq({
+          expect(dt.to_hash).to eq({
             key: 'city',
             values: {
               Moscow: {
@@ -259,7 +259,7 @@ RSpec.describe DecisionTree, type: :model do
       let(:dt) { DecisionTree.construct }
 
       it do
-        expect(dt.to_h).to eq({
+        expect(dt.to_hash).to eq({
           key: 'color',
           values: {
             green: {
@@ -298,7 +298,7 @@ RSpec.describe DecisionTree, type: :model do
         let(:dt) { DecisionTree.construct }
 
         it do
-          expect(dt.to_h).to eq({
+          expect(dt.to_hash).to eq({
             key: 'name',
             values: {
               'kəˈtuːluː': [action.id],
@@ -317,7 +317,7 @@ RSpec.describe DecisionTree, type: :model do
         let(:dt) { DecisionTree.construct }
 
         it do
-          expect(dt.to_h).to eq({
+          expect(dt.to_hash).to eq({
             key: 'symbols',
             values: {
               '\'~*^$@$@!': [action.id],
@@ -339,7 +339,7 @@ RSpec.describe DecisionTree, type: :model do
           let(:dt) { DecisionTree.construct }
 
           it { expect(dt).to be_kind_of(DecisionTree) }
-          it { expect(dt.to_h).to be_kind_of(Hash) }
+          it { expect(dt.to_hash).to be_kind_of(Hash) }
           it { expect { DecisionTree.construct }.to perform_under(50).ms }
         end
 
@@ -356,7 +356,7 @@ RSpec.describe DecisionTree, type: :model do
           let(:dt) { DecisionTree.construct }
 
           it { expect(dt).to be_kind_of(DecisionTree) }
-          it { expect(dt.to_h).to be_kind_of(Hash) }
+          it { expect(dt.to_hash).to be_kind_of(Hash) }
           it { expect { DecisionTree.construct }.to perform_under(50).ms }
         end
 
@@ -371,7 +371,7 @@ RSpec.describe DecisionTree, type: :model do
           let(:dt) { DecisionTree.construct }
 
           it { expect(dt).to be_kind_of(DecisionTree) }
-          it { expect(dt.to_h).to be_kind_of(Hash) }
+          it { expect(dt.to_hash).to be_kind_of(Hash) }
           it { expect { DecisionTree.construct }.to perform_under(50).ms }
         end
       end
@@ -388,7 +388,7 @@ RSpec.describe DecisionTree, type: :model do
           let(:dt) { DecisionTree.construct }
 
           it { expect(dt).to be_kind_of(DecisionTree) }
-          it { expect(dt.to_h).to be_kind_of(Hash) }
+          it { expect(dt.to_hash).to be_kind_of(Hash) }
           # 😕
           it { expect { DecisionTree.construct }.to perform_under(10_000).ms }
         end
