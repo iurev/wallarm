@@ -28,11 +28,8 @@
 
 #### Создание
 
-curl:
-
 ```
-POST /api/v1/actions HTTP/1.1
-Host: localhost:3000
+POST /api/v1/actions
 Content-Type: application/json
 
 {
@@ -44,11 +41,8 @@ Content-Type: application/json
 
 #### Получение
 
-curl:
-
 ```
-GET /api/v1/actions HTTP/1.1
-Host: localhost:3000
+GET /api/v1/actions
 ````
 
 Всегда возвращает `200` с массивом Action-ов
@@ -57,11 +51,8 @@ Host: localhost:3000
 
 #### Получение
 
-curl:
-
 ```
-GET /api/v1/decision_tree HTTP/1.1
-Host: localhost:3000
+GET /api/v1/decision_tree
 ````
 
 Всегда возвращает дерево решений со статусом `200`
